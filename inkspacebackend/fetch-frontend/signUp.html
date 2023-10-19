@@ -1,0 +1,102 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Abhiram Portfolio</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/templatemo-blue.css' %}">
+    <style>
+        /* Center the content */
+        .container {
+            text-align: center;
+        }
+
+
+        /* Reduce form elements size */
+        .form-control {
+            width: 50%; /* Adjust the width as needed */
+            padding: 5px;
+            font-size: 14px;
+            margin: 0 auto; /* Center the form elements */
+        }
+
+        .form-control1{
+            width: 10%; /* Adjust the width as needed */
+            padding: 5px;
+            font-size: 16px;
+            margin: 0 auto; /* Center the form elements */
+        }
+    </style>
+</head>
+<body data-spy="scroll" data-target=".navbar-collapse">
+    <div class="preloader">
+        <div class="sk-spinner sk-spinner-wordpress">
+            <span class="sk-inner-circle"></span>
+        </div>
+    </div>
+
+    <header>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 col-sm-12">
+                    <hr>
+                    <h1 class="tm-title bold shadow">Sign Up Page!</h1>
+                    <h1 class="white bold shadow">Please enter your details:</h1>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="container">
+        <form id="myform" method = "POST">
+            {% csrf_token %}
+            <div class="col-md-12 col-sm-12">
+                <div class="emailpass">
+                    <input type="name" class="form-control" id="first_name" placeholder="Enter your First Name" required />
+                </div><br>
+                <div class="emailpass">
+                    <input type="name" class="form-control" id="last_name" placeholder="Enter your Last Name" required />
+                </div><br>
+                <label for="gender">Select your gender: </label>
+                <input type="radio" name="gender"value="M" id="male"> Male
+                <input type="radio" name="gender" value="F" id="Female"> Female
+                <br><br>
+                <label for="birthdate" req>Enter your birthdate</label>
+                <input type="date" id="birthdate" name="birthdate" required>
+                <br><br>
+                <div class="emailpass">
+                    <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter your Email" required>
+                </div><br>
+                <div class="emailpass password-container">
+                    <input type="password" class="form-control" id="password" placeholder="Enter your Password" required>
+                    <span><i class="far fa-eye" id="eye"></i></span>
+                </div><br>
+                <button type="Submit" class="button">Submit</button>
+                <span id="test1"></span>
+            </div>
+        </form>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 col-sm-12">
+                    <p>Copyright &copy; InkSage</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="{% static 'js/jquery.js' %}"></script>
+    <script src="{%static  'js/bootstrap.min.js' %}"></script>
+    <script src="{%static  'js/jquery.backstretch.min.js' %}"></script>
+    <script src="{% static 'js/custom.js' %}"></script>
+</body>
+</html>
