@@ -46,8 +46,8 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12 col-sm-12">
-                    <hr>
                     <h1 class="tm-title bold shadow">Sign Up Page!</h1>
+                    <hr>
                     <h1 class="white bold shadow">Please enter your details:</h1>
                 </div>
             </div>
@@ -55,34 +55,26 @@
     </header>
 
     <section class="container">
-        <form id="myform" method = "POST">
-            {% csrf_token %}
             <div class="col-md-12 col-sm-12">
-                <div class="emailpass">
-                    <input type="name" class="form-control" id="first_name" placeholder="Enter your First Name" required />
-                </div><br>
-                <div class="emailpass">
-                    <input type="name" class="form-control" id="last_name" placeholder="Enter your Last Name" required />
-                </div><br>
-                <label for="gender">Select your gender: </label>
-                <input type="radio" name="gender"value="M" id="male"> Male
-                <input type="radio" name="gender" value="F" id="Female"> Female
-                <br><br>
-                <label for="birthdate" req>Enter your birthdate</label>
-                <input type="date" id="birthdate" name="birthdate" required>
-                <br><br>
-                <div class="emailpass">
-                    <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter your Email" required>
-                </div><br>
-                <div class="emailpass password-container">
-                    <input type="password" class="form-control" id="password" placeholder="Enter your Password" required>
-                    <span><i class="far fa-eye" id="eye"></i></span>
-                </div><br>
-                <button type="Submit" class="button">Submit</button>
-                <span id="test1"></span>
+                <form id="myform1" method="POST">
+                    {% csrf_token %}
+                    <span id="usererror" name="usererror"> Username exists</span><br>
+                    <div class="emailpass">
+                        <input type="name" class="form-control" name="username" id="username" placeholder="Username" required />
+                    </div><br>
+                    <div class="emailpass">
+                        <input type="email" class="form-control" name="email" id="email" aria-describedby="emailHelp" placeholder="Email Address" required />
+                    </div><br>
+                    <div class="emailpass password-container">
+                        <input type="password" class="form-control" name="password" id="password" placeholder="Password" required>
+                    </div><br>
+                    <div class="emailpass password-container">
+                        <input type="password" class="form-control" id="password1" name="password1" placeholder="Confirm Password" required>
+                    </div><br>
+                    <button type="submit" class="button">Submit</button>
+                </form>
             </div>
-        </form>
-    </section>
+    </section>  
 
     <footer>
         <div class="container">

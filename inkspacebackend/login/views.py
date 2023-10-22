@@ -1,6 +1,10 @@
+from django.db.utils import IntegrityError
 from django.shortcuts import render,redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import login,authenticate,logout
+from django.contrib import messages
+import pyautogui
+from .form import *
 
 # Create your views here.
 
@@ -16,12 +20,15 @@ def signIn(request):
         if user is not None:
             login(request,user)
             if request.user.is_authenticated:
-                return redirect('home/')
+                return redirect('/home/')
             else:
-                return render(request,'index.html')
+                pyautogui.alert("Wrong Password")
+
 
         else:
+            pyautogui.alert("Wrong Password")
             return render(request,'index.html')
+
 
     else:
         return render(request,'index.html')
@@ -29,10 +36,147 @@ def signIn(request):
 
 def home(request):
     if request.user.is_authenticated:
-        return render(request,'home.html')
+        return redirect('/display/')
     else:
-        return redirect('signIn/')
+        return redirect('/signIn/')
     
 
+
 def signUp(request):
-    return render(request,'index.html')
+    if request.method == "POST":
+        username = request.POST['username']
+        email = request.POST['email']
+        password1 = request.POST['password']
+        password2 = request.POST['password1']
+        print(username,email,password1,password2)
+        if password1 != password2:
+            return messages.warning(request,"Please check your password")
+        else:
+            try:
+                myuser = User.objects.create_user(username,email,password1)
+                myuser.save()
+
+            except IntegrityError as e:
+                return render(request,'signUp.html')
+
+            return redirect('/signIn/')
+    else:
+        return render(request,'signUp.html')
+    
+
+
+def signInAgain(request):
+    request.redirect('/signIn/')
+
+
+def display(request):
+    context = {'blogs':BlogModel.objects.all()}
+    return render(request,'home.html',context)
+
+
+def addBlog(request):
+    context = {'form': BlogForm}
+    try:
+        if request.method =="POST":
+            form = BlogForm(request.POST)
+            image = request.FILES['image']
+            title = request.POST.get('title')
+            user = request.user
+
+            if form.is_valid():
+                content = form.cleaned_data['content']
+
+
+
+            BlogModel.objects.create(user= user, title = title, content = content, image=image)
+
+            return redirect('/display/')
+
+    except Exception as e:
+        print(e)
+
+    return render(request,'addBlog.html',context)
+
+
+def viewFullBlog(request):
+    return render(request,'fullBlog.html')
+
+
+def blog_detail(request,slug):
+    context ={}
+    try:
+        blog_obj = BlogModel.objects.filter(slug = slug).first()
+        context['blog_obj'] = blog_obj
+
+    except Exception as e:
+        print(e)
+    return render(request,'blog_detail.html',context)
+
+
+
+def view_blog(request):
+    context={}
+    try:
+        blog_objs = BlogModel.objects.filter(user = request.user )
+        context['blog_objs'] = blog_objs
+
+
+    except Exception as e:
+        print(e)
+    return render(request,'view_blog.html',context)
+
+
+def blog_delete(request,id):
+    try:
+        blog_obj = BlogModel.objects.get(id=id)
+        if(blog_obj.user==request.user):
+            blog_obj.delete()
+
+
+    except Exception as e:
+        print(e)
+
+    return redirect('/view_blog/')
+
+
+def blog_update(request,slug):
+    context ={}
+    try:
+        blog_obj = BlogModel.objects.get(slug = slug)
+        
+        if(blog_obj.user!=request.user):
+            return redirect('/')
+        inital_dict ={'content': blog_obj.content}
+        form = BlogForm(initial = inital_dict)
+        if request.method =="POST":
+            form = BlogForm(request.POST)
+            image = request.FILES['image']
+            title = request.POST.get('title')
+            user = request.user
+
+            if form.is_valid():
+                content = form.cleaned_data['content']
+
+
+
+            BlogModel.objects.create(user= user, title = title, content = content, image=image)
+
+
+        context['blog_obj'] = blog_obj
+        context['form'] = form
+
+
+    except Exception as e:
+        print(e)
+
+    return render(request,'update_blog.html',context)
+
+
+
+
+
+def logout_view(request):
+    logout(request)
+    return redirect('/signIn/')
+    
+    

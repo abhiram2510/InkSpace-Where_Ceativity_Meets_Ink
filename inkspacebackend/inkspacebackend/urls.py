@@ -16,6 +16,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
+
+
 
 
 urlpatterns = [
@@ -24,4 +28,15 @@ urlpatterns = [
     path('home/',include('login.urls')),
     path('admin/', admin.site.urls),
     path('signUp/',include('login.urls')),
+    path('signIn/signUp/',include('login.urls')),
+    path('signUp/signIn/',include('login.urls')),
+    path('display/',include('login.urls')),
+    path('viewFullBlog/',include('login.urls')),
+    path('froala_editor/',include('froala_editor.urls')),
+    path('addBlog/', include('login.urls')),
+
 ]
+
+if settings.DEBUG:
+ urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+ urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

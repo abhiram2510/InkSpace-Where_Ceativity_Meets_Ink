@@ -1,12 +1,32 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <h1>Welcome!, {{request.user}}</h1>
-    
-</body>
-</html>
+{% extends "base.html"%}
+
+{% block content %}
+
+
+<div class="container mt-5 mb-5">
+    <div class="row">
+        {% for blog in blogs %}
+        <div class="col-lg-4 col-sm-6 mb-4 hover-animate">
+            <div class="card shadow hover-animate" style="width: 18rem;">
+                <a href ="{% url 'blog_detail' blog.slug %}">
+                <img src="/media/{{blog.image}}" class="card-img-top" alt="..."></a>
+                <div class="card-body"><a class="text-uppercase text-muted text-sm letter-spacing-2">
+                    {{blog.user.username}}
+                </a>
+                  <h5 class="card-title"><a class="text-dark" href ="{% url 'blog_detail' blog.slug %}">{{blog.title}}</a></h5>
+                  <p class="card-text">{{blog.created_at}}</p>
+                  <!-- <p class="card-text">{{blog.content|safe}}</p> -->
+                  <button class="btn btn-success text-white"><i class="fa fa-thumbs-o-up"></i></button>
+                  <p class="card-text"><a href ="{% url 'blog_detail' blog.slug %}">Read More!</a></p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        
+
+
+
+    </div>
+</div>
+
+{% endblock %}
