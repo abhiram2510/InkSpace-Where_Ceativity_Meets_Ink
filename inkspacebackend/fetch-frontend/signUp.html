@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Abhiram Portfolio</title>
+    <title>InkSpace - SignUp Page</title>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="keywords" content="">
@@ -13,6 +13,20 @@
     <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/templatemo-blue.css' %}">
     <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            background: url("{% static 'images/mainbackground.jpg' %}") no-repeat;
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+            min-height: 10vh;
+
+        }
+
         /* Center the content */
         .container {
             text-align: center;
@@ -35,7 +49,7 @@
         }
     </style>
 </head>
-<body data-spy="scroll" data-target=".navbar-collapse">
+<body class="body" data-spy="scroll" data-target=".navbar-collapse">
     <div class="preloader">
         <div class="sk-spinner sk-spinner-wordpress">
             <span class="sk-inner-circle"></span>
@@ -54,11 +68,15 @@
         </div>
     </header>
 
-    <section class="container">
+    <section class="container body">
             <div class="col-md-12 col-sm-12">
                 <form id="myform1" method="POST">
                     {% csrf_token %}
-                    <span id="usererror" name="usererror"> Username exists</span><br>
+                    {% for message in messages %}
+                    <div class="alert alert-{{message.tags}}" style="margin-left: 280px; width: 50%" role="alert">
+                    <strong></strong>{{message}}
+                    </div>
+                    {% endfor %}
                     <div class="emailpass">
                         <input type="name" class="form-control" name="username" id="username" placeholder="Username" required />
                     </div><br>
@@ -80,7 +98,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12 col-sm-12">
-                    <p>Copyright &copy; InkSage</p>
+                    <p><font color="black">Copyright &copy; InkSpace Inc.</font></p>
                 </div>
             </div>
         </div>

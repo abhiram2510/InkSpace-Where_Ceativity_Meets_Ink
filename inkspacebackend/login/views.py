@@ -5,7 +5,8 @@ from django.contrib.auth import login,authenticate,logout
 from django.contrib import messages
 import pyautogui
 from .form import *
-
+import re
+regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
 # Create your views here.
 
 def index(request):
@@ -22,11 +23,11 @@ def signIn(request):
             if request.user.is_authenticated:
                 return redirect('/home/')
             else:
-                pyautogui.alert("Wrong Password")
-
+                messages.warning(request,"Wrong password!")
+                return render(request,'index.html')
 
         else:
-            pyautogui.alert("Wrong Password")
+            messages.warning(request,"Enter valid username/password")
             return render(request,'index.html')
 
 
@@ -49,17 +50,25 @@ def signUp(request):
         password1 = request.POST['password']
         password2 = request.POST['password1']
         print(username,email,password1,password2)
-        if password1 != password2:
-            return messages.warning(request,"Please check your password")
+        if(re.match(regex,email)):
+            if password1 != password2:
+                messages.warning(request,"Please check your password")
+                return render(request,'signup.html')
+            else:
+                try:
+                    myuser = User.objects.create_user(username,email,password1)
+                    myuser.save()
+
+                except IntegrityError as e:
+                    messages.warning(request,"Username already exists!")
+                    return render(request,'signUp.html')
+
+                return redirect('/')
         else:
-            try:
-                myuser = User.objects.create_user(username,email,password1)
-                myuser.save()
+            messages.warning(request,"Please enter a valid Email ID")
+            return render(request,'signUp.html')
 
-            except IntegrityError as e:
-                return render(request,'signUp.html')
 
-            return redirect('/signIn/')
     else:
         return render(request,'signUp.html')
     
@@ -158,8 +167,11 @@ def blog_update(request,slug):
                 content = form.cleaned_data['content']
 
 
-
+            blog_obj = BlogModel.objects.get(slug=slug)
+            blog_obj.delete()
             BlogModel.objects.create(user= user, title = title, content = content, image=image)
+
+            return redirect("/display/")
 
 
         context['blog_obj'] = blog_obj
@@ -177,6 +189,6 @@ def blog_update(request,slug):
 
 def logout_view(request):
     logout(request)
-    return redirect('/signIn/')
+    return redirect('/')
     
     

@@ -1,0 +1,30 @@
+/* static/css/styles.css */
+body, html {
+    height: 100%;
+    margin: 0;
+}
+
+#slideshow-container {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+
+.slide {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    position: absolute;
+    animation: fade 3s ease-in-out infinite;
+}
+
+@keyframes fade {
+    0%, 100% {
+        opacity: 0;
+    }
+    25%, 75% {
+        opacity: 1;
+    }
+}
